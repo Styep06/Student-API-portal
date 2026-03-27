@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Student API</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+
+<style>
+:root {
+  --black: #0d0d0d;
+  --yellow: #ffe135;
+  --white: #fafaf5;
+  --blue: #1a56ff;
+  --green: #00c96e;
+  --red: #ff2d2d;
+  --orange: #ff6b35;
+  --pink: #ff4d8d;
+
+  --border: 3px solid #0d0d0d;
+  --shadow: 5px 5px 0 #0d0d0d;
+
+  --font: 'Space Grotesk', sans-serif;
+  --mono: 'Space Mono', monospace;
+}
+
+/* BACKGROUND */
+body {
+  font-family: var(--font);
+  margin: 0;
+  padding: 20px;
+  color: var(--black);
+
+  background:
+    radial-gradient(circle at 20% 20%, rgba(0,0,0,0.08) 2px, transparent 2px),
+    radial-gradient(circle at 80% 80%, rgba(0,0,0,0.08) 2px, transparent 2px),
+    linear-gradient(135deg, #ffe135 0%, #ffd000 100%);
+
+  background-size: 40px 40px, 40px 40px, cover;
+}
+
+/* FLOATING SHAPES */
+.bg-shape {
+  position: fixed;
+  z-index: -1;
+  border: var(--border);
+  box-shadow: var(--shadow);
+}
+
+.shape1 {
+  width: 120px;
+  height: 120px;
+  background: var(--blue);
+  top: 80px;
+  left: 40px;
+  transform: rotate(12deg);
+}
+
+.shape2 {
+  width: 90px;
+  height: 90px;
+  background: var(--pink);
+  bottom: 60px;
+  right: 60px;
+  transform: rotate(-15deg);
+}
+
+.shape3 {
+  width: 60px;
+  height: 60px;
+  background: var(--green);
+  top: 300px;
+  right: 120px;
+  transform: rotate(8deg);
+}
+
+/* LOGO */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.logo-box {
+  width: 60px;
+  height: 60px;
+  background: var(--black);
+  color: var(--yellow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  border: var(--border);
+  box-shadow: var(--shadow);
+  transform: rotate(-5deg);
+}
+
+.logo h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.tag {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+}
+
+/* LAYOUT */
+.container {
+  max-width: 1000px;
+  margin: auto;
+  display: grid;
+  gap: 20px;
+}
+
+/* CARD */
+.card {
+  background: var(--white);
+  border: var(--border);
+  box-shadow: var(--shadow);
+  padding: 15px;
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translate(-3px, -3px);
+}
+
+/* INPUT */
+input {
+  padding: 10px;
+  border: var(--border);
+  box-shadow: var(--shadow);
+  font-family: var(--mono);
+  width: 100%;
+  margin: 5px 0;
+}
+
+/* BUTTON */
+button {
+  padding: 10px 15px;
+  font-weight: bold;
+  border: var(--border);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  margin-top: 10px;
+  text-transform: uppercase;
+}
+
+button:hover {
+  transform: translate(-2px, -2px);
+}
+
+.btn-add { background: var(--green); }
+.btn-get { background: var(--blue); color: white; }
+.btn-update { background: var(--orange); }
+.btn-delete { background: var(--red); color: white; }
+.btn-refresh { background: var(--black); color: var(--yellow); }
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: var(--black);
+  color: var(--yellow);
+  padding: 10px;
+}
+
+td {
+  border: var(--border);
+  padding: 10px;
+  background: var(--white);
+}
+
+/* RESPONSE */
+pre {
+  background: var(--black);
+  color: #0f0;
+  padding: 10px;
+  border: var(--border);
+  box-shadow: var(--shadow);
+  font-family: var(--mono);
+}
+</style>
+</head>
+
+<body>
+
+<!-- FLOATING DESIGN -->
+<div class="bg-shape shape1"></div>
+<div class="bg-shape shape2"></div>
+<div class="bg-shape shape3"></div>
+
+<!-- LOGO -->
+<div class="logo">
+  <div class="logo-box">📚</div>
+  <div>
+    <h1>StudentAPI</h1>
+    <span class="tag">/api/v1 • CRUD SYSTEM</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ADD -->
+  <div class="card">
+    <h3>Add Student</h3>
+    <input type="text" id="name" placeholder="Name">
+    <input type="text" id="branch" placeholder="Branch">
+    <input type="number" id="year" placeholder="Year">
+    <button class="btn-add" onclick="addStudent()">Add</button>
+  </div>
+
+  <!-- GET -->
+  <div class="card">
+    <h3>Get Student</h3>
+    <input type="text" id="getId" placeholder="STU-001">
+    <button class="btn-get" onclick="getStudent()">Get</button>
+  </div>
+
+  <!-- UPDATE -->
+  <div class="card">
+    <h3>Update Student</h3>
+    <input type="text" id="updateId" placeholder="STU-001">
+    <input type="text" id="updateName" placeholder="New Name">
+    <input type="text" id="updateBranch" placeholder="New Branch">
+    <input type="number" id="updateYear" placeholder="New Year">
+    <button class="btn-update" onclick="updateStudent()">Update</button>
+  </div>
+
+  <!-- DELETE -->
+  <div class="card">
+    <h3>Delete Student</h3>
+    <input type="text" id="deleteId" placeholder="STU-001">
+    <button class="btn-delete" onclick="deleteStudent()">Delete</button>
+  </div>
+
+  <!-- TABLE -->
+  <div class="card">
+    <h3>All Students</h3>
+    <button class="btn-refresh" onclick="getAll()">Refresh</button>
+
+    <table id="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Branch</th>
+          <th>Year</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- RESPONSE -->
+  <div class="card">
+    <h3>Response</h3>
+    <pre id="response"></pre>
+  </div>
+
+</div>
+
+<script>
+const BASE = "http://localhost:3000/students";
+
+async function getAll() {
+  const res = await fetch(BASE);
+  const data = await res.json();
+  document.getElementById("response").textContent = JSON.stringify(data, null, 2);
+
+  const tbody = document.querySelector("#table tbody");
+  tbody.innerHTML = "";
+
+  data.data.forEach(s => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${s.id}</td>
+        <td>${s.name}</td>
+        <td>${s.branch}</td>
+        <td>${s.year}</td>
+      </tr>`;
+  });
+}
+
+async function addStudent() {
+  const name = document.getElementById("name").value;
+  const branch = document.getElementById("branch").value;
+  const year = document.getElementById("year").value;
+
+  const res = await fetch(BASE, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({ name, branch, year })
+  });
+
+  document.getElementById("response").textContent = await res.text();
+  getAll();
+}
+
+async function getStudent() {
+  const id = document.getElementById("getId").value;
+  const res = await fetch(`${BASE}/${id}`);
+  document.getElementById("response").textContent = await res.text();
+}
+
+async function updateStudent() {
+  const id = document.getElementById("updateId").value;
+  const name = document.getElementById("updateName").value;
+  const branch = document.getElementById("updateBranch").value;
+  const year = document.getElementById("updateYear").value;
+
+  const body = {};
+  if (name) body.name = name;
+  if (branch) body.branch = branch;
+  if (year) body.year = year;
+
+  const res = await fetch(`${BASE}/${id}`, {
+    method: "PATCH",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify(body)
+  });
+
+  document.getElementById("response").textContent = await res.text();
+  getAll();
+}
+
+async function deleteStudent() {
+  const id = document.getElementById("deleteId").value;
+
+  await fetch(`${BASE}/${id}`, { method: "DELETE" });
+
+  document.getElementById("response").textContent = "Deleted";
+  getAll();
+}
+
+getAll();
+</script>
+
+</body>
+</html>
